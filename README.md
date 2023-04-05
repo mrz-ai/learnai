@@ -1,7 +1,5 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/82e54673-00dc-422c-b501-b5132fdae6de/deploy-status)](https://app.netlify.com/sites/learnai-app/deploys)
 
-
-# Next.js 13 App with OpenAI API for Semantic Search
+# Learnai App with OpenAI API for Semantic Search
 
 This repository contains a Next.js 13 application that allows users to perform semantic searches using the OpenAI API. The app is built using TypeScript and styled using a combination of Tailwind and DaisyUI.
 
@@ -35,11 +33,6 @@ The application should be available at http://localhost:3000.
 
 
 
-## Authors
-
-- [@githubmor](https://github.com/githubmor)
-
-
 ## Usage
 
 To use the application, simply enter a query into the search box on the home page and hit enter. The application will use the OpenAI API to generate a set of suggested questions and keywords based on your query. You can click on any of the suggested questions or keywords to learn more about that subject.
@@ -51,4 +44,9 @@ This application was created using the GPT-3.5-Turbo model from OpenAI. The proj
 
 This project is licensed under the MIT License. Please see the [MIT License](https://choosealicense.com/licenses/mit/) file for more information.
 
+
+
+## Authors
+
+- [@githubmor](https://github.com/githubmor)
 
