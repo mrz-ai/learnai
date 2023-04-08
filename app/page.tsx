@@ -1,9 +1,18 @@
 "use client";
-import { useAsk, useAskStream } from "./useAsk";
+import { ReactElement, useState } from "react";
+import Form from "./form";
+import { ResultType } from "./useAsk";
+import Result from "./result";
 
 export default function Home() {
-  // const { result, isLoading, onChangeHandler, question } = useAskStream();
-  const { result, isLoading, onChangeHandler, question } = useAsk();
+  const [results, setResults] = useState<ReactElement[]>([]);
+
+  const onShowResultHandler = (question: string, result: ResultType) => {
+    const newComponent = (
+      <Result question={question} result={result} key={question} />
+    );
+    setResults((c) => [...c, newComponent]);
+  };
 
   return (
     <div className="flex flex-col gap-8 w-full justify-stretch items-stretch pt-12 px-48">
@@ -14,41 +23,8 @@ export default function Home() {
           <span className="font-bold text-blue-600"> هوش مصنوعی کمک میکنه</span>
         </small>
       </div>
-      <div className="flex gap-2">
-        {/* <textarea /> */}
-        <input
-          className="input input-bordered flex-auto"
-          type="text"
-          placeholder="موضوع"
-          ref={question}
-        />
-        <button
-          className={`btn btn-primary ${isLoading ? "loading" : ""} self-start`}
-          onClick={onChangeHandler}
-        >
-          بپرس
-        </button>
-      </div>
-      {/* <span className="border rounded-md p-4 flex-auto">{result}</span> */}
-      {result && (
-        <>
-          <p>{result.summary}</p>
-          <ul>
-            {result.questions.map((q) => {
-              return <li key={q}>{q}</li>;
-            })}
-          </ul>
-          <div className="flex gap-2 py-3">
-            {result.keywords.map((q) => {
-              return (
-                <small className="badge badge-lg badge-accent" key={q}>
-                  {q}
-                </small>
-              );
-            })}
-          </div>
-        </>
-      )}
+      <Form onShowResult={onShowResultHandler} />
+      {results}
     </div>
   );
 }
