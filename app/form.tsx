@@ -1,15 +1,30 @@
-import React, { useRef, useState } from "react";
-import { ResultType, useAsk } from "./useAsk";
+import React, { useRef } from "react";
 
 type Props = {
-  onShowResult: (question: string, result: ResultType) => void;
+  onAskChatGpt: (question: string, chatQuestion: string) => void;
+  isLoading: boolean;
 };
 
-export default function Form({ onShowResult }: Props) {
-  const { isLoading, onChangeHandler, question } = useAsk({
-    onResult: onShowResult,
-  });
+export default function Form({ onAskChatGpt, isLoading }: Props) {
+  const question = useRef<HTMLInputElement>(null);
+  const onChangeHandler = () => {
+    const q = `'${question.current?.value ?? ""}'
+          جمله بالا را در نظر بگیر و
+          اگر جمله بالا عبارت سوالی هست
+          توضیح کامل در مورد موضوع سوال بصورت description بنویس 
+          موضوع سوال را بصورت subject بنویس
+          و لیستی از کلمات کلیدی مرتبط به موضوع سوال را بصورت keywords بنویس
+          و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
+          اگر جمله بالا یک موضوع هست 
+          توضیح کامل در مورد موضوع  بصورت description بنویس 
+          خود موضوع را بصورت subject بنویس
+          و لیستی از کلمات کلیدی مرتبط به موضوع را بصورت keywords بنویس
+          و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
+          نتیجه رو به شکل زیر بنویس :
+          {"description":"this is description ...","subject":"subject","keywords":["key1","key2",...],"questions":["q1","q2",...]}`;
 
+    onAskChatGpt(question.current?.value ?? "", q);
+  };
   return (
     <div className="flex gap-2">
       <input
@@ -22,7 +37,7 @@ export default function Form({ onShowResult }: Props) {
         className={`btn btn-primary ${isLoading ? "loading" : ""} self-start`}
         onClick={onChangeHandler}
       >
-        بپرس
+        {!isLoading && <span>بپرس</span>}
       </button>
     </div>
   );
