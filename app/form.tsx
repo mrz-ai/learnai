@@ -21,7 +21,7 @@ export default function Form({ onAskChatGpt, isLoading }: Props) {
           و لیستی از کلمات کلیدی مرتبط به موضوع را بصورت keywords بنویس
           و لیستی از سوالاتی مشابه رو بصورت questions بنویس
           نتیجه رو به شکل زیر بنویس :
-          {"description":"this is description ...","subject":"subject","keywords":["key1","key2",...],"questions":["q1","q2",...]}`;
+          {"description":"this is description","subject":"subject","keywords":["key1","key2",...],"questions":["q1","q2",...]}`;
 
     onAskChatGpt(question.current?.value ?? "", prompt);
   };

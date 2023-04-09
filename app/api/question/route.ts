@@ -10,7 +10,7 @@ export async function POST(req: Request): Promise<Response> {
   const { prompt } = (await req.json()) as {
     prompt?: string;
   };
-
+  console.log("prompt is :", prompt);
   if (!prompt) {
     return new Response("No prompt in the request", { status: 400 });
   }

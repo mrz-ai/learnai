@@ -9,6 +9,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const onAskChatGptHandler = (question: string, prompt: string) => {
+    console.log("prompt is:", prompt);
     setIsLoading(true);
     fetch("/api/question", {
       method: "POST",
@@ -20,19 +21,24 @@ export default function Home() {
       }),
     })
       .then((response) => {
+        console.log("response is:", response);
         if (!response.ok) {
           throw new Error(response.statusText);
         }
         return response.json();
       })
       .then((data) => {
+        console.log("data is:", data);
         if (!data) {
           return;
         }
 
         onShowResultHandler(question, data);
       })
-      .catch((e) => setError(e.message))
+      .catch((e) => {
+        console.log("error is:", e);
+        setError(e.message);
+      })
       .finally(() => {
         setIsLoading(false);
       });
