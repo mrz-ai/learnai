@@ -5,12 +5,6 @@ This repository contains a Next.js 13 application that allows users to perform s
 
 
 
-
-## Demo
-
-https://learnai-app.netlify.app/
-
-
 ## Setup
 
 To get started with this application, you will first need to clone the repository to your local machine. Once you have done that, navigate to the project directory and run the following command to install the required dependencies:
