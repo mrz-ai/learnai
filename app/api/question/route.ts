@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 if (!process.env.OPENAI_API_KEY) {
   throw new Error("Missing env var from OpenAI");
 }
@@ -37,5 +39,5 @@ export async function POST(req: Request): Promise<Response> {
   console.log("result is :", result);
   console.log("result content is :", result.choices[0].message?.content ?? "");
 
-  return new Response(result.choices[0].message?.content ?? "");
+  return NextResponse.json(result.choices[0].message?.content ?? {});
 }
