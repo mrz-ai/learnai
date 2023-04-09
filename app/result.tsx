@@ -62,7 +62,10 @@ export default function Result({
             </div>
           </div>
           <div>
-            <span className="text-black font-bold mb-3"> کلمات کلیدی :</span>
+            <span className="text-black font-bold mb-3">
+              کلمات کلیدی :{" "}
+              <small className="text-xs text-gray-400">بپرس</small>
+            </span>
             <div className="flex gap-2 py-3">
               {result.keywords.map((q) => {
                 return (
