@@ -4,7 +4,7 @@ import { ResultType } from "./useAsk";
 type Props = {
   question: string;
   result: ResultType;
-  onAskChatGpt: (question: string, chatQuestion: string) => void;
+  onAskChatGpt: (question: string, prompt: string) => void;
   isLoading: boolean;
 };
 
@@ -16,18 +16,18 @@ export default function Result({
 }: Props) {
   const onAskKeyword = (keyword: string) => {
     const subject = result.subject;
-    const q = `موضوع ${keyword} در ${subject} است
+    const prompt = `موضوع ${keyword} در ${subject} است
      توضیح در مورد موضوع  بصورت description بنویس 
           و لیستی از کلمات کلیدی مرتبط به موضوع را بصورت keywords بنویس
           و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
           نتیجه رو به شکل زیر بنویس :
           {"description":"this is description","subject":"subject","keywords":["key1","key2",...],"questions":["q1","q2",...]}`;
 
-    onAskChatGpt(keyword, q);
+    onAskChatGpt(keyword, prompt);
   };
 
   const onAskQuestion = (question: string) => {
-    const q = ` با توجه به سوال ${question} 
+    const prompt = ` با توجه به سوال ${question} 
     توضیح در مورد موضوع سوال بصورت description بنویس 
           موضوع سوال را بصورت subject بنویس
           و لیستی از کلمات کلیدی مرتبط به موضوع سوال را بصورت keywords بنویس
@@ -35,7 +35,7 @@ export default function Result({
           نتیجه رو به شکل زیر بنویس :
           {"description":"this is description","subject":"subject","keywords":["key1","key2",...],"questions":["q1","q2",...]}
     `;
-    onAskChatGpt(question, q);
+    onAskChatGpt(question, prompt);
   };
 
   return (

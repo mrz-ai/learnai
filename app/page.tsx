@@ -7,15 +7,15 @@ import Result from "./result";
 export default function Home() {
   const [results, setResults] = useState<ReactElement[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const onAskChatGptHandler = (question: string, chatQuestion: string) => {
+  const onAskChatGptHandler = (question: string, prompt: string) => {
     setIsLoading(true);
-    fetch("/api/sub", {
+    fetch("/api/question", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: chatQuestion,
+        prompt: prompt,
       }),
     })
       .then((response) => {
@@ -28,10 +28,8 @@ export default function Home() {
         if (!data) {
           return;
         }
-        console.log("this is data recive from chatgpt", data);
 
         onShowResultHandler(question, data);
-        // setResult(data);
       })
       .finally(() => {
         setIsLoading(false);
@@ -47,7 +45,6 @@ export default function Home() {
         onAskChatGpt={onAskChatGptHandler}
       />
     );
-    console.log(question, result);
 
     setResults((c) => [...c, newComponent]);
   };
