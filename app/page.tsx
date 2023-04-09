@@ -22,9 +22,9 @@ export default function Home() {
     })
       .then((response) => {
         console.log("response is:", response);
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
+        // if (!response.ok) {
+        //   throw new Error(response.statusText);
+        // }
         return response.json();
       })
       .then((data) => {

@@ -35,6 +35,7 @@ export async function POST(req: Request): Promise<Response> {
   const result = await res.json();
 
   console.log("result is :", result);
+  console.log("result content is :", result.choices[0].message?.content ?? "");
 
   return new Response(result.choices[0].message?.content ?? "");
 }
