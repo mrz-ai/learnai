@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-// if (!process.env.OPENAI_API_KEY) {
-//   throw new Error("Missing env var from OpenAI");
-// }
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error("Missing key OpenAI");
+}
 
 export const config = {
   runtime: "edge",
@@ -28,7 +28,7 @@ export async function POST(req: Request): Promise<Response> {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ""}`,
     },
     method: "POST",
     body: JSON.stringify(payload),
