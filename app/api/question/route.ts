@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("Missing key OpenAI");
-}
-
 export const config = {
   runtime: "edge",
 };
