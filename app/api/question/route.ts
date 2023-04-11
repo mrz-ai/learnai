@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("Missing env var from OpenAI");
-}
+// if (!process.env.OPENAI_API_KEY) {
+//   throw new Error("Missing env var from OpenAI");
+// }
 
-// export const config = {
-//   runtime: "edge",
-// };
+export const config = {
+  runtime: "edge",
+};
 
 export async function POST(req: Request): Promise<Response> {
   const { prompt } = (await req.json()) as {
@@ -24,6 +24,11 @@ export async function POST(req: Request): Promise<Response> {
     max_tokens: 2048,
     n: 1,
   };
+
+  console.log(
+    "this is process.env.OPENAI_API_KEY :",
+    process.env.OPENAI_API_KEY ?? "nothing"
+  );
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
