@@ -25,15 +25,10 @@ export async function POST(req: Request): Promise<Response> {
     n: 1,
   };
 
-  console.log(
-    "this is process.env.OPENAI_API_KEY :",
-    process.env.OPENAI_API_KEY ?? "nothing"
-  );
-
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ""}`,
+      Authorization: `Bearer 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`,
     },
     method: "POST",
     body: JSON.stringify(payload),
