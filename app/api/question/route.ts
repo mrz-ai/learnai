@@ -4,7 +4,7 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function POST(req: Request): Promise<Response> {
+export async function POST(req: Request): Promise<Response> {
   const { prompt } = (await req.json()) as {
     prompt?: string;
   };
