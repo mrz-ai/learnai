@@ -1,4 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/82e54673-00dc-422c-b501-b5132fdae6de/deploy-status)](https://app.netlify.com/sites/learnai-app/deploys)
+[![Deploy Next.js site to Pages](https://github.com/mrz-ai/learnai/actions/workflows/nextjs.yml/badge.svg)](https://github.com/mrz-ai/learnai/actions/workflows/nextjs.yml)
+
+
 # Learnai App with OpenAI API for Semantic Search
 
 This repository contains a Next.js 13 application that allows users to perform semantic searches using the OpenAI API. The app is built using TypeScript and styled using a combination of Tailwind and DaisyUI.
