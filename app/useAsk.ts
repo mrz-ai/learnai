@@ -43,44 +43,29 @@ export const useAskStream = () => {
   return { result, onChangeHandler };
 };
 
-export const useAsk = () => {
-  const onChangeHandler = async (question: string) => {
-    if (question != "") {
-      fetch("/api/sub", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: question,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (!data) {
-            return;
-          }
-          return data;
-        });
+export const askAi = (question: string) => {
+  return fetch("/api/question", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      prompt: question,
+    }),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
-  };
-
-  return { onChangeHandler };
+    return response.json();
+  });
 };
 
-export const createQuestionSubjectPromot = (question: string) => {
-  return `what is the main subject of this sentence : ${question} , please give short answer and just the subject`;
+export const createQustionsPromot = (question: string) => {
+  return `this is user question : '${question}', list promots for ask from ai about that and write list like
+  this json format : ["q1",...]`;
 };
 
-export const createQuestionBetterPromot = (question: string) => {
-  return `if i ask question like this ${question} , list questions that you need to make better answer ,just write questions in json format like this : [{"q":"this is question",...}] `;
-};
-
-export const createSubjectSimillarQuestion = (subject: string) => {
-  return `write list of question about '${subject}' , just write list in json format like this : [{"q":"this is question",...}]`;
+export const createParagraphPromot = (question: string) => {
+  return `${question} , write subject of the question as title and answert like
+  this json format : {"title":"title","answer":"this is answer"}`;
 };

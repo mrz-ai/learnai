@@ -1,27 +1,47 @@
 "use client";
 import { useState } from "react";
 import Form from "./form";
-import { useAsk, useAskStream } from "./useAsk";
+import {
+  askAi,
+  createParagraphPromot,
+  createQustionsPromot,
+  useAskStream,
+} from "./useAsk";
+import Result from "./result";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const subject = useAsk();
-  const betterQuestion = useAskStream();
-  const description = useAskStream();
-  const subjectQuestion = useAskStream();
+  const [results, setResults] = useState<{ answer: string; title: string }[]>(
+    []
+  );
 
   const onAskChatGpt = (question: string) => {
     setIsLoading(true);
-    Promise.all([
-      description.onChangeHandler(question),
-      betterQuestion.onChangeHandler(question),
-      subject
-        .onChangeHandler(question)
-        .then((result) => subjectQuestion.onChangeHandler(result + "")),
-    ])
-      .catch((e) => setError(e))
-      .finally(() => setIsLoading(false));
+    const promot = createQustionsPromot(question);
+    askAi(promot).then((res) => {
+      const r = JSON.parse(res);
+      r.map((it: any) => {
+        const p = createParagraphPromot(it);
+        askAi(p).then((jes) => {
+          const t = JSON.parse(jes);
+          setResults((c) => [...c, { answer: jes.answer, title: jes.title }]);
+        });
+      });
+    });
+
+    // Promise.all([
+    //   askAi(promot).then((result) => {
+    //     result.map((p: string) => {
+    //       const s = createParagraphPromot(p);
+    //       return askAi(s).then((res: { answer: string; title: string }) => {
+    //         setResults((c) => [...c, { answer: res.answer, title: res.title }]);
+    //       });
+    //     });
+    //   }),
+    // ])
+    //   .catch((e) => setError(e))
+    //   .finally(() => setIsLoading(false));
   };
 
   return (
@@ -29,18 +49,9 @@ const Home = () => {
       <Form onAskChatGpt={onAskChatGpt} isLoading={isLoading} />
       <strong>{error}</strong>
       <div className="overflow-auto flex flex-col gap-4 whitespace-pre-wrap">
-        <div className="flex flex-col gap-2">
-          <strong>description :</strong>
-          <small>{description.result}</small>
-        </div>
-        <div className="flex flex-col gap-2">
-          <strong>better Questions :</strong>
-          <small>{betterQuestion.result}</small>
-        </div>
-        <div className="flex flex-col gap-2">
-          <strong>subject Questions :</strong>
-          <small>{subjectQuestion.result}</small>
-        </div>
+        {results.map((it) => {
+          return <Result key={it.title} {...it} />;
+        })}
       </div>
     </div>
   );
