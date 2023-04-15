@@ -1,170 +1,86 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-// export const useAskStream = () => {
-//   const [result, setResult] = useState<string | null>(null);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const question = useRef<HTMLInputElement>(null);
-//   const onChangeHandler = async () => {
-//     if (question.current) {
-//       setIsLoading(true);
-//       setResult(null);
+export const useAskStream = () => {
+  const [result, setResult] = useState<string>("");
 
-//       const response = await fetch("/api/sub", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           prompt: `'${question.current.value}'
-//           if sentence is question write description and keyword related to subject of question
-//           if sentence is not question write description and list of some main question about it
-//           write result like this :
-//           {"description":"this is description","keywords":["key1","key2",...],"questions":["q1","q2",...]}`,
-//         }),
-//       });
+  const onChangeHandler = async (question: string) => {
+    if (question) {
+      setResult("");
 
-//       if (!response.ok) {
-//         throw new Error(response.statusText);
-//       }
+      const response = await fetch("/api/questions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: question,
+        }),
+      });
 
-//       // This data is a ReadableStream
-//       const data = response.body;
-//       if (!data) {
-//         return;
-//       }
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
 
-//       const reader = data.getReader();
-//       const decoder = new TextDecoder();
-//       let done = false;
+      // This data is a ReadableStream
+      const data = response.body;
+      if (!data) {
+        return;
+      }
 
-//       while (!done) {
-//         const { value, done: doneReading } = await reader.read();
-//         done = doneReading;
-//         const chunkValue = decoder.decode(value);
-//         setResult((prev) => prev + chunkValue);
-//       }
-//       setIsLoading(false);
-//       question.current.value = "";
-//     }
-//   };
+      const reader = data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
 
-//   return { result, isLoading, onChangeHandler, question };
-// };
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        setResult((prev) => prev + chunkValue);
+      }
+    }
+  };
 
-export type ResultType = {
-  description: string;
-  keywords: string[];
-  questions: string[];
-  subject: string;
+  return { result, onChangeHandler };
 };
 
-// export const useAsk = () => {
-//   const [result, setResult] = useState<ResultType | null>(null);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const question = useRef<HTMLInputElement>(null);
-//   const onChangeHandler = async () => {
-//     if (question.current) {
-//       setIsLoading(true);
-//       setResult(null);
+export const useAsk = () => {
+  const onChangeHandler = async (question: string) => {
+    if (question != "") {
+      fetch("/api/sub", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: question,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (!data) {
+            return;
+          }
+          return data;
+        });
+    }
+  };
 
-//       fetch("/api/sub", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           prompt: `'${question.current.value}'
-//           جمله بالا را در نظر بگیر و
-//           اگر جمله بالا عبارت سوالی هست
-//           توضیح در مورد موضوع سوال بصورت description بنویس
-//           و لیستی از کلمات کلیدی مرتبط به موضوع سوال را بصورت keywords بنویس
-//           و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
-//           اگر جمله بالا یک موضوع هست
-//           توضیح در مورد موضوع  بصورت description بنویس
-//           و لیستی از کلمات کلیدی مرتبط به موضوع را بصورت keywords بنویس
-//           و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
-//           نتیجه رو به شکل زیر بنویس :
-//           {"description":"this is description","keywords":["key1","key2",...],"questions":["q1","q2",...]}`,
-//         }),
-//       })
-//         .then((response) => {
-//           if (!response.ok) {
-//             throw new Error(response.statusText);
-//           }
-//           return response.json();
-//         })
-//         .then((data) => {
-//           if (!data) {
-//             return;
-//           }
-//           setResult(data);
-//         })
-//         .finally(() => {
-//           setIsLoading(false);
-//           if (question.current) {
-//             question.current.value = "";
-//           }
-//         });
-//     }
-//   };
+  return { onChangeHandler };
+};
 
-//   return { result, isLoading, onChangeHandler, question };
-// };
+export const createQuestionSubjectPromot = (question: string) => {
+  return `what is the main subject of this sentence : ${question} , please give short answer and just the subject`;
+};
 
-// type Props = {
-//   onResult: (question: string, result: ResultType) => void;
-// };
+export const createQuestionBetterPromot = (question: string) => {
+  return `if i ask question like this ${question} , list questions that you need to make better answer ,just write questions in json format like this : [{"q":"this is question",...}] `;
+};
 
-// export const useAsk = ({ onResult }: Props) => {
-//   // const [result, setResult] = useState<ResultType | null>(null);
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const onChangeHandler = async () => {
-//     if (question.current) {
-//       setIsLoading(true);
-//       // setResult(null);
-
-//       fetch("/api/sub", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           prompt: `'${question.current.value}'
-//           جمله بالا را در نظر بگیر و
-//           اگر جمله بالا عبارت سوالی هست
-//           توضیح در مورد موضوع سوال بصورت description بنویس
-//           و لیستی از کلمات کلیدی مرتبط به موضوع سوال را بصورت keywords بنویس
-//           و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
-//           اگر جمله بالا یک موضوع هست
-//           توضیح در مورد موضوع  بصورت description بنویس
-//           و لیستی از کلمات کلیدی مرتبط به موضوع را بصورت keywords بنویس
-//           و لیستی از سوالاتی که میتونه در درک آن کمک کنه رو بصورت questions بنویس
-//           نتیجه رو به شکل زیر بنویس :
-//           {"description":"this is description","keywords":["key1","key2",...],"questions":["q1","q2",...]}`,
-//         }),
-//       })
-//         .then((response) => {
-//           if (!response.ok) {
-//             throw new Error(response.statusText);
-//           }
-//           return response.json();
-//         })
-//         .then((data) => {
-//           if (!data) {
-//             return;
-//           }
-//           onResult(question.current?.value ?? "", data);
-//           // setResult(data);
-//         })
-//         .finally(() => {
-//           setIsLoading(false);
-//           if (question.current) {
-//             question.current.value = "";
-//           }
-//         });
-//     }
-//   };
-
-//   return { isLoading, onChangeHandler, question };
-// };
+export const createSubjectSimillarQuestion = (subject: string) => {
+  return `write list of question about '${subject}' , just write list in json format like this : [{"q":"this is question",...}]`;
+};
