@@ -4,7 +4,7 @@ import Form from "./form";
 import { ResultType } from "./useAsk";
 import Result from "./result";
 
-export default function Home() {
+const Home = () => {
   const [results, setResults] = useState<ReactElement[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -58,10 +58,12 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 overflow-hidden">
       <Form onAskChatGpt={onAskChatGptHandler} isLoading={isLoading} />
       <span>{error}</span>
-      {results}
+      <div className="overflow-auto flex flex-col gap-4">{results}</div>
     </div>
   );
-}
+};
+
+export default Home;

@@ -39,7 +39,7 @@ export default function Result({
   };
 
   return (
-    <div className="flex flex-col gap-8 p-4 bg-white rounded-lg">
+    <div className="flex flex-col gap-8 p-4 bg-white rounded-lg ">
       <h4 className="text-primary">
         <span className="font-bold text-black">سوال :</span> {question}
       </h4>
