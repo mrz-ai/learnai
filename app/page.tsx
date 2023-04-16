@@ -12,36 +12,41 @@ import Result from "./result";
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [results, setResults] = useState<{ answer: string; title: string }[]>(
-    []
-  );
+  // const [results, setResults] = useState<{ answer: string; title: string }[]>(
+  //   []
+  // );
+  const { onChangeHandler, result } = useAskStream();
 
   const onAskChatGpt = (question: string) => {
     setIsLoading(true);
-    const promot = createQustionsPromot(question);
-    askAi(promot).then((res) => {
-      const r = JSON.parse(res);
-      r.map((it: any) => {
-        const p = createParagraphPromot(it);
-        askAi(p).then((jes) => {
-          const t = JSON.parse(jes);
-          setResults((c) => [...c, { answer: jes.answer, title: jes.title }]);
-        });
-      });
-    });
+    onChangeHandler(question)
+      .catch((er) => setError(er))
+      .finally(() => setIsLoading(false));
+    // const promot = createQustionsPromot(question);
+    // askAi(promot).then((str) => {
+    //   const sentences = [];
+    //   let startIndex = 0;
 
-    // Promise.all([
-    //   askAi(promot).then((result) => {
-    //     result.map((p: string) => {
-    //       const s = createParagraphPromot(p);
-    //       return askAi(s).then((res: { answer: string; title: string }) => {
-    //         setResults((c) => [...c, { answer: res.answer, title: res.title }]);
-    //       });
-    //     });
-    //   }),
-    // ])
-    //   .catch((e) => setError(e))
-    //   .finally(() => setIsLoading(false));
+    //   for (let i = 0; i < str.length; i++) {
+    //     if (str[i] === "@") {
+    //       startIndex = i;
+    //     } else if (str[i] === "#") {
+    //       const sentence = str.slice(startIndex + 1, i);
+    //       sentences.push(sentence);
+    //     }
+    //   }
+
+    //   console.log(sentences);
+
+    //   // const r = JSON.parse(res);
+    //   // r.map((it: any) => {
+    //   //   const p = createParagraphPromot(it);
+    //   //   askAi(p).then((jes) => {
+    //   //     const t = JSON.parse(jes);
+    //   //     setResults((c) => [...c, { answer: jes.answer, title: jes.title }]);
+    //   //   });
+    //   // });
+    // });
   };
 
   return (
@@ -49,9 +54,10 @@ const Home = () => {
       <Form onAskChatGpt={onAskChatGpt} isLoading={isLoading} />
       <strong>{error}</strong>
       <div className="overflow-auto flex flex-col gap-4 whitespace-pre-wrap">
-        {results.map((it) => {
+        <span className="whitespace-pre-wrap">{result}</span>
+        {/* {results.map((it) => {
           return <Result key={it.title} {...it} />;
-        })}
+        })} */}
       </div>
     </div>
   );

@@ -61,11 +61,10 @@ export const askAi = (question: string) => {
 };
 
 export const createQustionsPromot = (question: string) => {
-  return `this is user question : '${question}', list promots for ask from ai about that and write list like
-  this json format : ["q1",...]`;
+  return `this is user question : '${question}', list 3 question for give parameters from user. just write question that start with '@' and end with '#'`;
 };
 
 export const createParagraphPromot = (question: string) => {
-  return `${question} , write subject of the question as title and answert like
+  return `question : '${question}' , write subject of the question as title and answert like
   this json format : {"title":"title","answer":"this is answer"}`;
 };

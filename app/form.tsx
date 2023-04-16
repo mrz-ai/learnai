@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { FiSend } from "react-icons/fi";
+import { CgSpinnerTwo } from "react-icons/cg";
 
 type Props = {
   onAskChatGpt: (question: string) => void;
@@ -7,7 +8,7 @@ type Props = {
 };
 
 export default function Form({ onAskChatGpt, isLoading }: Props) {
-  const question = useRef<HTMLInputElement>(null);
+  const question = useRef<HTMLTextAreaElement>(null);
   const onChangeHandler = () => {
     if (question.current?.value) {
       onAskChatGpt(question.current?.value);
@@ -21,19 +22,23 @@ export default function Form({ onAskChatGpt, isLoading }: Props) {
       }}
       className="flex gap-2 relative"
     >
-      <input
-        className="input input-bordered flex-auto"
-        type="text"
-        placeholder="Ask from AI ..."
+      <textarea
+        className="textarea textarea-bordered flex-auto"
+        placeholder="Ask from ChatGpt ..."
         ref={question}
       />
-      <FiSend
-        role="button"
-        size={22}
-        color="gray"
-        className="absolute right-3 top-3"
-        onClick={() => onChangeHandler()}
-      />
+      <div className="absolute right-3 top-3">
+        {isLoading ? (
+          <CgSpinnerTwo size={22} color="gray" className="animate-spin" />
+        ) : (
+          <FiSend
+            role="button"
+            size={22}
+            color="gray"
+            onClick={() => onChangeHandler()}
+          />
+        )}
+      </div>
     </form>
   );
 }
