@@ -53,7 +53,7 @@ const Home = () => {
     <div className="flex flex-col gap-6 overflow-hidden">
       <Form onAskChatGpt={onAskChatGpt} isLoading={isLoading} />
       <strong>{error}</strong>
-      <div className="overflow-auto flex flex-col gap-4 whitespace-pre-wrap">
+      <div className="overflow-auto flex flex-col gap-4 whitespace-pre-wrap mb-4">
         <span className="whitespace-pre-wrap">{result}</span>
         {/* {results.map((it) => {
           return <Result key={it.title} {...it} />;
