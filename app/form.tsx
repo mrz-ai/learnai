@@ -24,7 +24,7 @@ export default function Form({ onAskChatGpt, isLoading }: Props) {
     >
       <textarea
         className="textarea textarea-bordered flex-auto"
-        placeholder="Ask from ChatGpt ..."
+        defaultValue="I want to learn "
         ref={question}
       />
       <div className="absolute right-3 top-3">
